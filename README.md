@@ -10,6 +10,9 @@ Precompile a bunch of templates:
 ```js
 var gulp = require('gulp');
 var compile = require('gulp-dust');
+var concat = require('gulp-concat');
+var insert = require('gulp-insert');
+var rename = require('gulp-rename');
 
 gulp.task('pre', function () {
     // grep for "//" type comments and issue error
@@ -22,8 +25,8 @@ gulp.task('pre', function () {
 });
 ```
 
-In some other module, say `index.js` of a `rendering-promises` package, create
- a rendering promise (we're after a 
+In some other module, say `rendering_promises.js`, create some rendering
+promises (we're after a
 `partial1({k1:v1, k2:v2}).done(console.log, console.error)` use case):
 ```js
 var dust = require('dustjs-linkedin');
@@ -45,10 +48,10 @@ exports.partial2 = function (context) {
 };
 ```
 
-And finally, use a promise from `rendering-promises` in a task:
+And finally, use a promise from the `rendering-promises` module in a task:
 ```
 var render = require('gulp-dust-render');
-var partials = require('rendering-promises');
+var partials = require('./rendering-promises');
 
 gulp.task('render', ['pre'], function () {
     gulp.src('./contexts/**/*.json')
