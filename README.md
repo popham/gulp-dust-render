@@ -1,7 +1,8 @@
-> Render [Dust](https://github.com/linkedin/dustjs) templates
+Render [Dust](https://github.com/linkedin/dustjs) templates
+===========================================================
 
-The simplest of use case uses a JSON file as context to prerendered templates.
-To use an object as for context, take a look at
+The simplest use case takes a JSON file as context to render templates.  To use
+an object for context instead of a file, take a look at
 [vinyl-source-stream](https://github.com/hughsk/vinyl-source-stream).
 
 ## Example
@@ -10,7 +11,6 @@ Precompile a bunch of templates:
 var gulp = require('gulp');
 var compile = require('gulp-dust');
 
-// Precompile a bunch of templates.
 gulp.task('pre', function () {
     // grep for "//" type comments and issue error
     return gulp.src('./templates/**/*.dust')
@@ -31,8 +31,8 @@ var when = require('when/node');
 
 /*
  * Memoize the partials for dust to use later.  Beware of name
- * collisions--another module that memoizes more partials can clobber these
- * ones.
+ * collisions--another module that memoizes additional partials can clobber
+ * these ones.
  */
 require('precompiled/blob');
 
@@ -45,7 +45,7 @@ exports.partial2 = function (context) {
 };
 ```
 
-Use a promise from `rendering-promises` in a task:
+And finally, use a promise from `rendering-promises` in a task:
 ```
 var render = require('gulp-dust-render');
 var partials = require('rendering-promises');
@@ -68,7 +68,7 @@ Type: `Function`
 
 Map a context to a promise to render it.  The promise should fulfill or fail
 with the success or fail outputs of Dust's render callback.  See the earlier
-example using [when](https://github.com/cujojs/when).
+example using [when](https://github.com/cujojs/when)--specifically, `when.lift`.
 
 ## License
 
