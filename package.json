@@ -12,7 +12,8 @@
   },
   "keywords": [
     "dust",
-    "template"
+    "template",
+    "gulp"
   ],
   "author": "Tim Popham",
   "license": "MIT",
