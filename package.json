@@ -1,6 +1,6 @@
 {
   "name": "gulp-dust-render",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Render Dust templates.",
   "main": "index",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "dust",
-    "template"
+    "template",
+    "gulpplugin"
   ],
   "author": "Tim Popham",
   "license": "MIT",
