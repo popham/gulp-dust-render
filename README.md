@@ -33,7 +33,7 @@ var dust = require('dustjs-linkedin');
 var when = require('when/node');
 
 /*
- * Memoize the partials for dust to use later.  Beware of name
+ * Memoize the partials for Dust to use later.  Beware of name
  * collisions--another module that memoizes additional partials can clobber
  * these ones.
  */
@@ -57,7 +57,7 @@ gulp.task('render', ['pre'], function () {
     gulp.src('./contexts/**/*.json')
         .pipe(render(partials.partial1))
         .pipe(rename({ extname : "js" }))
-	.pipe(gulp.dest('compiled'));
+        .pipe(gulp.dest('compiled'));
 });
 ```
 
