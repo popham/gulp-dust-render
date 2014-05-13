@@ -2,8 +2,20 @@ Render [Dust](https://github.com/linkedin/dustjs) templates
 ===========================================================
 
 The simplest use case takes a JSON file as context to render templates.  To use
-an object for context instead of a file, take a look at
-[vinyl-source-stream](https://github.com/hughsk/vinyl-source-stream).
+an object for context instead of a file, try
+[vinyl-source-stream](https://github.com/hughsk/vinyl-source-stream) combined
+with
+
+```
+function sstream(text) {
+    var s = new stream.Readable(text);
+    s._read = function noop() {};
+    s.push(text);
+    s.push(null);
+}
+```
+
+(instead of `gulp.src(...)`).
 
 ## Example
 Precompile a bunch of templates:
