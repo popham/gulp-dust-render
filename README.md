@@ -12,6 +12,8 @@ function sstream(text) {
     s._read = function noop() {};
     s.push(text);
     s.push(null);
+
+    return s;
 }
 ```
 
