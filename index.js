@@ -1,7 +1,7 @@
 var gutil = require('gulp-util');
 var through = require('through2');
 
-module.exports.reader = function (renderPromise) {
+module.exports = function (renderPromise) {
     return through.obj(function (file, enc, cb) {
 	if (file.isNull()) {
             this.push(file);
@@ -14,7 +14,10 @@ module.exports.reader = function (renderPromise) {
 	}
 
 	try {
-            var context = JSON.parse(file.contents.toString());
+            var context = {};
+            if (file.contents.toString().trim()) {
+                context = JSON.parse(file.contents.toString());
+            }
             renderPromise(context)
                 .done(
                     function (rendering) {
