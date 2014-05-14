@@ -9,14 +9,16 @@ Render [Dust](https://github.com/linkedin/dustjs) templates
 
 Type: `Function`
 
-Map a context to a promise to render it.  The promise should fulfill or fail
-with the success or fail outputs of Dust's render callback.  See the earlier
-example using [when](https://github.com/cujojs/when)--specifically, `when.lift`.
+Map a context to a promise to render that context.  The promise should fulfill
+or fail with the success or fail outputs of Dust's render callback.  See
+[rendering promises](###Create Some Rendering Promises) for example use of
+[when](https://github.com/cujojs/when)'s `lift` method.
 
-## File for Rendering Context
+## Using a File for Rendering Context
 The simplest use case takes a JSON file as context to render templates.
 
 ### Precompile a Bunch of Templates
+
 ```js
 var gulp = require('gulp');
 var compile = require('gulp-dust');
@@ -37,7 +39,7 @@ gulp.task('pre', function () {
 
 ### Create Some Rendering Promises
 In some other module, say `rendering_promises.js`, create a promise generator.
-We're after a function that maps a context to a promise to render the context,
+We're after a function that maps a context to a promise to render that context,
 e.g. `partial1({k1:v1, k2:v2}).done(console.log, console.error)`.
 
 ```js
@@ -60,7 +62,7 @@ exports.partial2 = function (context) {
 };
 ```
 
-### Use a Promise for a Rendering Stage
+### Rendering a Template
 ```
 var render = require('gulp-dust-render');
 var partials = require('./rendering-promises');
@@ -76,10 +78,10 @@ gulp.task('render', ['pre'], function () {
 
 ## Object for Rendering Context
 [vinyl-source-stream](https://github.com/hughsk/vinyl-source-stream) transforms
-a text stream to something compatible with Gulp.
+a text stream to a Gulp-compatible stream.
 
 ### Create a Data Source
-Start the pipeline with some text.  The following helper should be helpful:
+Start the pipeline with some text.  The following helper should be helpful.
 
 ```
 function sstream(text) {
