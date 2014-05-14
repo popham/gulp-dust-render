@@ -11,7 +11,7 @@ Type: `Function`
 
 Map a context to a promise to render that context.  The promise should fulfill
 or fail with the success or fail outputs of Dust's render callback.  See
-[rendering promises](#Create Some Rendering Promises) for example use of
+[rendering promises](#create-some-rendering-promises) for example use of
 [when](https://github.com/cujojs/when)'s `lift` method.
 
 ## Using a File for Rendering Context
