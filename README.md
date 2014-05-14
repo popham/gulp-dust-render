@@ -1,26 +1,22 @@
 Render [Dust](https://github.com/linkedin/dustjs) templates
 ===========================================================
 
-The simplest use case takes a JSON file as context to render templates.  To use
-an object for context instead of a file, try
-[vinyl-source-stream](https://github.com/hughsk/vinyl-source-stream) combined
-with
+## API
 
-```
-function sstream(text) {
-    var s = new stream.Readable(text);
-    s._read = function noop() {};
-    s.push(text);
-    s.push(null);
+### render(renderer)
 
-    return s;
-}
-```
+#### renderer
 
-(instead of `gulp.src(...)`).
+Type: `Function`
 
-## Example
-Precompile a bunch of templates:
+Map a context to a promise to render it.  The promise should fulfill or fail
+with the success or fail outputs of Dust's render callback.  See the earlier
+example using [when](https://github.com/cujojs/when)--specifically, `when.lift`.
+
+## File for Rendering Context
+The simplest use case takes a JSON file as context to render templates.
+
+### Precompile a Bunch of Templates
 ```js
 var gulp = require('gulp');
 var compile = require('gulp-dust');
@@ -39,9 +35,11 @@ gulp.task('pre', function () {
 });
 ```
 
-In some other module, say `rendering_promises.js`, create some rendering
-promises (we're after a
-`partial1({k1:v1, k2:v2}).done(console.log, console.error)` use case):
+### Create Some Rendering Promises
+In some other module, say `rendering_promises.js`, create a promise generator.
+We're after a function that maps a context to a promise to render the context,
+e.g. `partial1({k1:v1, k2:v2}).done(console.log, console.error)`.
+
 ```js
 var dust = require('dustjs-linkedin');
 var when = require('when/node');
@@ -62,7 +60,7 @@ exports.partial2 = function (context) {
 };
 ```
 
-And finally, use a promise from the `rendering-promises` module in a task:
+### Use a Promise for a Rendering Stage
 ```
 var render = require('gulp-dust-render');
 var partials = require('./rendering-promises');
@@ -75,17 +73,54 @@ gulp.task('render', ['pre'], function () {
 });
 ```
 
-## API
 
-### render(renderer)
+## Object for Rendering Context
+[vinyl-source-stream](https://github.com/hughsk/vinyl-source-stream) transforms
+a text stream to something compatible with Gulp.
 
-#### renderer
+### Create a Data Source
+Start the pipeline with some text.  The following helper should be helpful:
 
-Type: `Function`
+```
+function sstream(text) {
+    var s = new stream.Readable(text);
+    s._read = function noop() {};
+    s.push(text);
+    s.push(null);
 
-Map a context to a promise to render it.  The promise should fulfill or fail
-with the success or fail outputs of Dust's render callback.  See the earlier
-example using [when](https://github.com/cujojs/when)--specifically, `when.lift`.
+    return s;
+}
+```
+
+### Pipe the Stream through `vinyl-source-stream`
+### Buffer the Stream with `gulp-buffer`
+### Pipe the Stream through `gulp-dust-render`
+
+
+## Template without Context
+Arises when the precompile stage completely determines the template.
+
+### Start the Pipeline
+
+```
+function renderingStream(promise) {
+    var s = new stream.Readable;
+    s._read = function noop() {};
+    promise.done(
+        function (rendering) {
+            s.push(rendering);
+            s.push(null);
+        },
+        console.error
+    );
+
+    return s;
+}
+```
+
+### Pipe the Stream through `vinyl-source-stream`
+### Pipe the Stream to its target
+
 
 ## License
 
