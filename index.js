@@ -3,17 +3,17 @@ var through = require('through2');
 
 module.exports = function (renderPromise) {
     return through.obj(function (file, enc, cb) {
-	if (file.isNull()) {
+        if (file.isNull()) {
             this.push(file);
             return cb();
-	}
+        }
 
-	if (file.isStream()) {
+        if (file.isStream()) {
             this.emit('error', new gutil.PluginError('gulp-dust-render', 'Streaming not supported'));
             return cb();
-	}
+        }
 
-	try {
+        try {
             var context = {};
             if (file.contents.toString().trim()) {
                 context = JSON.parse(file.contents.toString());
@@ -28,8 +28,8 @@ module.exports = function (renderPromise) {
                     function (err) {
                         this.emit('error', new gutil.PluginError('gulp-dust-render', err));
                     }.bind(this));
-	} catch (err) {
+        } catch (err) {
             this.emit('error', new gutil.PluginError('gulp-dust-render', err));
-	}
+        }
     });
 };
